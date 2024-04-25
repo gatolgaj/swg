@@ -10,20 +10,35 @@ from langchain.agents import initialize_agent
 from langchain_core.tools import tool
 from langchain.prompts.prompt import PromptTemplate
 from langchain_google_vertexai import VertexAI
-import fitz  # PyMuPDF
+from langchain.sql_database import SQLDatabase
+from langchain_community.agent_toolkits import create_sql_agent
+from langchain_openai import ChatOpenAI
+
 
 model = VertexAI(model_name="gemini-1.5-pro-preview-0409")
 
 
 
+db_lite = SQLDatabase.from_uri("sqlite:///side_effects.db")
+
 
 
 #from langchain_experimental import  SQLDatabaseChain
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # Replace with your OpenAI API key
+llm = ChatOpenAI(
+    openai_api_key=OPENAI_API_KEY,
+    model_name='gpt-4-0125-preview',
+    temperature=0.0,
+    max_tokens=4096
+    
+   # streaming=True
+)
+
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_API_KEY)
 client = QdrantClient(host="localhost", port=6333)
 vector_store = Qdrant(client, collection_name="Documents", embeddings=embeddings_model)
 vector_store_p = Qdrant(client, collection_name="Patients", embeddings=embeddings_model)
+agent_executor_lite = create_sql_agent(llm, db=db_lite, agent_type="openai-tools", verbose=True)
 
 
 def retrieve_pdf_data(query):
@@ -38,7 +53,22 @@ def retrieve_patient_data(query):
     data = [profile.page_content for profile in profiles]
     return ' '.join(data)
 
+@tool
+def  database_query_lite(query):
+    """
+Retrive Information about Drug side effects from the Table side_effects. The Columns drug_name and side_effect.
 
+To find side effects Following is an example Query 
+SELECT side_effect from side_effects where drug_name='carnitine';
+
+To Find drugs based on Side Affects 
+SELECT drug_name from side_effects where side_effect='Abdominal pain'
+"""
+    # Use the vector store to perform similarity search based on the query
+   # question = QUERY.format(question=query)
+    response = agent_executor_lite.run(query)
+    print(response)
+    return  response
 
 @tool
 def pdf_query(query):
@@ -74,7 +104,7 @@ def patient_query(query):
 
 
 
-tools = [pdf_query,patient_query]
+tools = [pdf_query,patient_query,database_query_lite]
 
 
 welcome_message = ("Welcome to the Princess Maxima Patient Care Center. We’re here to support you "
@@ -97,7 +127,7 @@ async def  start():
     agent = initialize_agent(
         agent='chat-conversational-react-description',
         tools=tools,
-        llm=model,
+        llm=llm,
         verbose=True,
         max_iterations=10,
         early_stopping_method='generate',
