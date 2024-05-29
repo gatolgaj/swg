@@ -96,7 +96,7 @@ The Script will do the following
 * extract the content of the text file in Pdata Folder.
 * start the chatbot application
 * The page is available in <http://localhost:8000>
-```
+
 
 ## :memo: License ##
 
