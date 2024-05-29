@@ -43,13 +43,13 @@ agent_executor_lite = create_sql_agent(llm, db=db_lite, agent_type="openai-tools
 
 def retrieve_pdf_data(query):
     # Use the vector store to perform similarity search based on the query
-    profiles = vector_store.similarity_search(query, k=5)
+    profiles = vector_store.similarity_search(query)
     data = [profile.page_content for profile in profiles]
     return ' '.join(data)
 
 def retrieve_patient_data(query):
     # Use the vector store to perform similarity search based on the query
-    profiles = vector_store_p.similarity_search(query, k=5)
+    profiles = vector_store_p.similarity_search(query)
     data = [profile.page_content for profile in profiles]
     return ' '.join(data)
 

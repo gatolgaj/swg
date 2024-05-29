@@ -66,7 +66,6 @@ Before starting :checkered_flag:, you need to have [Python](https://www.python.o
 
 ## :checkered_flag: Starting ##
 
-```bash
 **1.** Make sure that you have docker installed.
 
 **2.** Login to google gloud and setup the projrct. Make sure that Vertex AI is enabled.
@@ -111,3 +110,4 @@ Authors: Shyam Sundar, Joshua Goldberg, Wouter ten Brink, Gino Arcangeli
 &#xa0;
 
 <a href="#top">Back to top</a>
+
