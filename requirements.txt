@@ -1,0 +1,12 @@
+pydantic
+sqlalchemy
+os
+chainlit
+langchain_community
+qdrant_client
+langchain
+langchain_openai
+langchain_core
+langchain_google_vertexai
+langchain_sql_database
+langchain_community.agent_toolkits
