@@ -1,4 +1,5 @@
 pydantic
+pypdf
 sqlalchemy
 chainlit
 langchain_community
@@ -8,3 +9,4 @@ langchain_openai
 langchain_core
 langchain_google_vertexai
 langchain_community
+google-cloud-secret-manager
