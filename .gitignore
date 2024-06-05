@@ -3,3 +3,4 @@ __pycache__
 .DS_Store
 .data_initialized
 .chainlit
+service-account-key.json
