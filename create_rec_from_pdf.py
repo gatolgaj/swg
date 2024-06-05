@@ -5,11 +5,17 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Qdrant
+from google.cloud import secretmanager
+
+client = secretmanager.SecretManagerServiceClient()
 
 # Load environment variables
 load_dotenv()
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-QDRANT_URL = os.getenv("QDRANT_URL")
+# name = f"projects/236909908642/secrets/open-ai-api-key/versions/1"
+# response = client.access_secret_version(request={"name": name})
+# OPENAI_API_KEY =response.payload.data.decode("UTF-8")
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+QDRANT_URL = os.getenv('QDRANT_URL')
 
 # Initialize OpenAI Embeddings
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_API_KEY)

@@ -4,3 +4,4 @@ __pycache__
 .data_initialized
 .chainlit
 service-account-key.json
+env_variables.yaml

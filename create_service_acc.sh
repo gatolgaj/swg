@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-PROJECT_ID="dttl-nl-genai-sandbox"
+PROJECT_ID="236909908642"
 SERVICE_ACCOUNT_NAME="swg-svc-account"
 SERVICE_ACCOUNT_DISPLAY_NAME="SWG Service Account"
 KEY_PATH="service-account-key.json"

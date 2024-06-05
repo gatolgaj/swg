@@ -16,7 +16,7 @@ from langchain_openai import ChatOpenAI
 from google.cloud import secretmanager
 
 client = secretmanager.SecretManagerServiceClient()
-security_token = client.access_secret_version('projects/dttl-nl-genai-sandbox/secrets/cred-swg-svc-account/versions/latest')
+security_token = client.access_secret_version('projects/236909908642/secrets/cred-swg-svc-account/versions/latest')
 
 
 model = VertexAI(model_name="gemini-1.5-pro-preview-0409")
@@ -28,9 +28,13 @@ db_lite = SQLDatabase.from_uri("sqlite:///side_effects.db")
 
 
 #from langchain_experimental import  SQLDatabaseChain
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY") # Replace with your OpenAI API key
+# name = f"projects/236909908642/secrets/open-ai-api-key/versions/1"
+# response = client.access_secret_version(request={"name": name})
+# OPENAI_API_KEY =response.payload.data.decode("UTF-8")
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+QDRANT_URL = os.getenv('QDRANT_URL')
 llm = ChatOpenAI(
-    openai_api_key=OPENAI_API_KEY,
+    openai_api_key=os.getenv('OPENAI_API_KEY'),
     model_name='gpt-4-0125-preview',
     temperature=0.0,
     max_tokens=4096
