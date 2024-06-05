@@ -13,6 +13,10 @@ from langchain_google_vertexai import VertexAI
 from langchain.sql_database import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_openai import ChatOpenAI
+from google.cloud import secretmanager
+
+client = secretmanager.SecretManagerServiceClient()
+security_token = client.access_secret_version('projects/dttl-nl-genai-sandbox/secrets/cred-swg-svc-account/versions/latest')
 
 
 model = VertexAI(model_name="gemini-1.5-pro-preview-0409")
