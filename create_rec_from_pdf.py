@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from langchain.document_loaders import TextLoader
+# from langchain.document_loaders import TextLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
@@ -10,13 +10,12 @@ from google.cloud import secretmanager
 client = secretmanager.SecretManagerServiceClient()
 
 # Load environment variables
-load_dotenv()
+# load_dotenv()
 # name = f"projects/236909908642/secrets/open-ai-api-key/versions/1"
 # response = client.access_secret_version(request={"name": name})
 # OPENAI_API_KEY =response.payload.data.decode("UTF-8")
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-QDRANT_URL = os.getenv('QDRANT_URL')
-
+OPENAI_API_KEY = 'sk-proj-y0Yt7LoHizmFvLXWcnPhT3BlbkFJSnpxAvqt1VMr71RiiluC'#os.getenv('OPENAI_API_KEY')
+QDRANT_URL = '34.91.113.165'
 # Initialize OpenAI Embeddings
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_API_KEY)
 
@@ -39,6 +38,7 @@ def process_and_store_files(folder_path):
                 docs,
                 embeddings_model,
                 url=QDRANT_URL,
+                port=6334,
                 prefer_grpc=True,
                 collection_name=collection_name
             )

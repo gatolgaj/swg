@@ -4,6 +4,7 @@ sqlalchemy
 chainlit
 langchain_community
 qdrant_client
+langchain-qdrant
 langchain
 langchain_openai
 langchain_core

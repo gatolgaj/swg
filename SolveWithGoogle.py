@@ -2,7 +2,7 @@ import os
 import chainlit as cl
 from chainlit.types import ThreadDict
 from langchain_community.vectorstores import Qdrant
-from qdrant_client import QdrantClient
+from langchain-qdrant import QdrantClient
 from langchain.agents import initialize_agent
 from langchain_openai import OpenAIEmbeddings
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
@@ -16,7 +16,9 @@ from langchain_openai import ChatOpenAI
 from google.cloud import secretmanager
 
 client = secretmanager.SecretManagerServiceClient()
-security_token = client.access_secret_version('projects/236909908642/secrets/cred-swg-svc-account/versions/latest')
+token_secret_name = f"projects/236909908642/secrets/cred-swg-svc-account/versions/1"
+token_response = client.access_secret_version(request={"name": token_secret_name})
+security_token = token_response.payload.data.decode("UTF-8")
 
 
 model = VertexAI(model_name="gemini-1.5-pro-preview-0409")
@@ -31,11 +33,11 @@ db_lite = SQLDatabase.from_uri("sqlite:///side_effects.db")
 # name = f"projects/236909908642/secrets/open-ai-api-key/versions/1"
 # response = client.access_secret_version(request={"name": name})
 # OPENAI_API_KEY =response.payload.data.decode("UTF-8")
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-QDRANT_URL = os.getenv('QDRANT_URL')
+OPENAI_API_KEY='sk-proj-y0Yt7LoHizmFvLXWcnPhT3BlbkFJSnpxAvqt1VMr71RiiluC' #os.getenv('OPENAI_API_KEY')
+QDRANT_URL = '34.91.113.165'
 llm = ChatOpenAI(
-    openai_api_key=os.getenv('OPENAI_API_KEY'),
-    model_name='gpt-4-0125-preview',
+    openai_api_key=OPENAI_API_KEY,
+    model_name='gpt-3.5-turbo',
     temperature=0.0,
     max_tokens=4096
     
@@ -43,7 +45,7 @@ llm = ChatOpenAI(
 )
 
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_API_KEY)
-client = QdrantClient(host="localhost", port=6333)
+client = QdrantClient(host=QDRANT_URL, port=6334)
 vector_store = Qdrant(client, collection_name="Documents", embeddings=embeddings_model)
 vector_store_p = Qdrant(client, collection_name="Patients", embeddings=embeddings_model)
 agent_executor_lite = create_sql_agent(llm, db=db_lite, agent_type="openai-tools", verbose=True)

@@ -24,6 +24,7 @@
 # With Dockerfile
 runtime: custom
 env: flex
+#entrypoint: chainlit run SolveWithGoogle.py
 
 includes:
   - env_variables.yaml
@@ -44,3 +45,10 @@ resources:
   cpu: 1
   memory_gb: 0.5
   disk_size_gb: 10
+
+network:
+  instance_tag: swg-instance
+  name: guassian-genai
+  subnetwork_name: swg-subnet
+  forwarded_ports:
+    - 8000/tcp
