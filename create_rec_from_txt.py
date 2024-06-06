@@ -32,6 +32,7 @@ def process_and_store_files(folder_path):
                 docs,
                 embeddings_model,
                 url=QDRANT_URL,
+                port=6334,
                 prefer_grpc=True,
                 collection_name=collection_name
             )

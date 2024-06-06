@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from langchain.document_loaders import TextLoader
+# from langchain.document_loaders import TextLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
@@ -33,6 +33,7 @@ def process_and_store_files(folder_path):
                 docs,
                 embeddings_model,
                 url=QDRANT_URL,
+                port=6334,
                 prefer_grpc=True,
                 collection_name=collection_name
             )

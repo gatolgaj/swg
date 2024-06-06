@@ -33,9 +33,11 @@ llm = ChatOpenAI(
     
    # streaming=True
 )
-
+QDRANT_URL = os.getenv("QDRANT_URL")
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_API_KEY)
-client = QdrantClient(host="localhost", port=6333)
+client = QdrantClient(host=QDRANT_URL, 
+                      port=6334,
+                      prefer_grpc=True)
 vector_store = Qdrant(client, collection_name="Documents", embeddings=embeddings_model)
 vector_store_p = Qdrant(client, collection_name="Patients", embeddings=embeddings_model)
 agent_executor_lite = create_sql_agent(llm, db=db_lite, agent_type="openai-tools", verbose=True)
